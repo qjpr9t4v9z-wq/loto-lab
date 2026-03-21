@@ -61,12 +61,15 @@ display:flex;align-items:center;justify-content:space-between;
 }
 .logo{
 font-family:‘Cinzel’,serif;font-weight:900;font-size:1.05rem;letter-spacing:5px;
+color:var(–gold2);
 background:linear-gradient(90deg,var(–gold),var(–gold2));
--webkit-background-clip:text;-webkit-text-fill-color:transparent;
+-webkit-background-clip:text;
+background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 nav a{
-font-size:0.85rem;color:var(–muted);text-decoration:none;
-letter-spacing:1px;margin-left:20px;transition:color 0.2s;
+font-size:0.78rem;color:var(–muted);text-decoration:none;
+letter-spacing:1px;margin-left:14px;transition:color 0.2s;white-space:nowrap;
 }
 nav a:hover{color:var(–text);}
 
@@ -89,8 +92,11 @@ font-family:‘Cinzel’,serif;
 font-size:clamp(4rem,16vw,9rem);
 font-weight:900;line-height:0.85;letter-spacing:6px;
 margin-bottom:10px;
-background:linear-gradient(160deg,var(–gold3) 0%,var(–gold2) 30%,var(–gold) 55%,rgba(201,168,76,0.5) 100%);
--webkit-background-clip:text;-webkit-text-fill-color:transparent;
+color:var(–gold2);
+background:linear-gradient(160deg,var(–gold3) 0%,var(–gold2) 30%,var(–gold) 55%,rgba(201,168,76,0.7) 100%);
+-webkit-background-clip:text;
+background-clip:text;
+-webkit-text-fill-color:transparent;
 filter:drop-shadow(0 0 60px rgba(201,168,76,0.2));
 animation:up 0.9s 0.2s ease both;
 }
@@ -277,7 +283,7 @@ footer a:hover{color:var(–text);}
   <nav>
     <a href="loto7-gold.html">LOTO 7</a>
     <a href="loto6.html">LOTO 6</a>
-    <a href="lucky-items.html">開運グッズ</a>
+    <a href="lucky-items.html">開運</a>
   </nav>
 </header>
 
