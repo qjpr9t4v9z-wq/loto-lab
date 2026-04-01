@@ -13,52 +13,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="ロト6番号生成ツール。低高バランス・奇偶3:3・前回引張り・合計値120〜150を考慮した無料予測支援ツール。キャリーオーバー情報も表示。">
+<meta name="description" content="ロト6番号生成ツール。低高バランス・奇偶3:3・前回引張り・合計値120〜150を考慮した無料予測支援ツール。">
 <title>LOTO6 予測ツール | 無料番号生成</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --bg:#0f0f12;--bg2:#181820;--bg3:#202028;
-  --muted:#9090b8;--text:#d8d8e0;--border:rgba(255,255,255,0.08);
-  --blue:#8080c0;--purple:#6060a0;--green:#5ecda4;
-}
+:root{--bg:#0f0f12;--bg2:#181820;--bg3:#202028;--muted:#9090b8;--border:rgba(255,255,255,0.08);}
 body{background:#0f0f12!important;color:#d8d8e0!important;font-family:'Noto Sans JP','Hiragino Sans',sans-serif;font-size:16px;line-height:1.7;max-width:480px;margin:0 auto;-webkit-text-size-adjust:100%;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,200,220,0.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
-.site-header{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#1a1a22,#252535);border-bottom:2px solid #a0a0b8;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.5);}
+.site-header{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#1a1a22,#252535);border-bottom:2px solid #a0a0b8;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;}
 .site-logo{font-family:'Cinzel',Georgia,serif;font-weight:900;font-size:0.95rem;letter-spacing:3px;color:#d8d8e8;text-decoration:none;}
 .site-nav{display:flex;gap:4px;}
-.site-nav a{font-size:0.72rem;color:#9090a8;text-decoration:none;padding:6px 10px;border-radius:8px;transition:all 0.2s;letter-spacing:1px;}
-.site-nav a:hover{color:#d8d8e8;background:rgba(200,200,220,0.1);}
+.site-nav a{font-size:0.72rem;color:#9090a8;text-decoration:none;padding:6px 10px;border-radius:8px;letter-spacing:1px;}
 .site-nav a.active{color:#f0f0ff;background:rgba(200,200,220,0.18);border:1px solid rgba(200,200,220,0.25);}
-.hero{position:relative;z-index:1;text-align:center;padding:48px 24px 28px;background:linear-gradient(160deg,#10101a 0%,#1c1c28 50%,#141420 100%);border-bottom:1px solid #606078;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#c0c0d8,transparent);}
+.hero{position:relative;z-index:1;text-align:center;padding:48px 24px 28px;background:linear-gradient(160deg,#10101a 0%,#1c1c28 50%,#141420 100%);border-bottom:1px solid #606078;}
 .hero-sup{font-family:'Cinzel',Georgia,serif;font-size:0.6rem;letter-spacing:5px;color:#707088;margin-bottom:12px;}
-.hero-title{font-family:'Cinzel',Georgia,serif;font-size:3.5rem;font-weight:900;letter-spacing:6px;line-height:1;margin-bottom:4px;color:#c8c8d8;text-shadow:0 0 40px rgba(200,200,220,0.3);}
+.hero-title{font-family:'Cinzel',Georgia,serif;font-size:3.5rem;font-weight:900;letter-spacing:6px;line-height:1;margin-bottom:4px;color:#c8c8d8;}
 .hero-sub{font-size:0.7rem;letter-spacing:6px;color:#606078;margin-bottom:20px;}
 .hero-divider{display:flex;align-items:center;gap:12px;justify-content:center;}
 .hero-divider span{color:#808098;font-size:0.6rem;}
-.hero-divider::before,.hero-divider::after{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(to right,transparent,#808098,transparent);}
+.hero-divider::before,.hero-divider::after{content:'';flex:1;max-width:60px;height:1px;background:#808098;}
 .ad-wrap{position:relative;z-index:1;margin:8px 16px;}
-.ad-placeholder{background:rgba(255,255,255,0.02);border:1px dashed #404058;border-radius:10px;padding:16px;text-align:center;font-size:0.68rem;color:#606070;letter-spacing:2px;min-height:60px;display:flex;align-items:center;justify-content:center;}
+.ad-placeholder{background:rgba(255,255,255,0.02);border:1px dashed #404058;border-radius:10px;padding:16px;text-align:center;font-size:0.68rem;color:#606070;min-height:60px;display:flex;align-items:center;justify-content:center;}
 .status-bar{position:relative;z-index:1;margin:12px 16px 0;background:rgba(94,205,164,0.08);border:1px solid rgba(94,205,164,0.3);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:0.88rem;color:#5ecda4;}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#5ecda4;box-shadow:0 0 8px rgba(94,205,164,0.6);flex-shrink:0;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#5ecda4;flex-shrink:0;}
 .co-bar{position:relative;z-index:1;margin:6px 16px 0;background:rgba(255,208,96,0.08);border:1px solid rgba(255,208,96,0.35);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:8px;font-size:0.88rem;color:#ffd060;width:calc(100% - 32px);}
 .co-bar-amt{margin-left:auto;font-family:'Cinzel',Georgia,serif;font-weight:700;font-size:0.95rem;color:#ffe090;}
 .sec-label{position:relative;z-index:1;text-align:center;font-size:0.75rem;letter-spacing:4px;color:#808098;margin:20px 0 12px;display:flex;align-items:center;gap:10px;padding:0 16px;}
-.sec-label::before,.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,#404058,transparent);}
-.toggle-label{cursor:pointer;user-select:none;}
+.sec-label::before,.sec-label::after{content:'';flex:1;height:1px;background:#404058;}
+.toggle-label{cursor:pointer;user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .toggle-arrow{font-size:0.7rem;color:#a0a0b8;margin-left:8px;transition:transform 0.3s ease;display:inline-block;}
-.collapsible{overflow:hidden;max-height:2000px;transition:max-height 0.4s ease,opacity 0.3s ease;opacity:1;}
-.collapsible.closed{max-height:0;opacity:0;}
+.collapsible{overflow:hidden;max-height:0;opacity:0;transition:max-height 0.4s ease,opacity 0.3s ease;}
+.collapsible.open{max-height:2000px;opacity:1;}
 .results-list{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;padding:0 16px;}
-.result-card{background:#181820;border:1px solid #383850;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.4);}
+.result-card{background:#181820;border:1px solid #383850;border-radius:14px;padding:16px;}
 .result-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .result-round{font-size:1rem;font-weight:700;color:#d0d0e0;}
 .result-date{font-size:0.82rem;color:#707088;}
 .result-badges{display:flex;gap:6px;align-items:center;}
-.badge-new{font-size:0.72rem;letter-spacing:1px;background:linear-gradient(135deg,#9090b0,#c0c0d8);color:#0f0f18;padding:3px 10px;border-radius:10px;font-weight:700;}
-.badge-co{font-size:0.72rem;letter-spacing:1px;background:rgba(255,208,96,0.15);color:#ffd060;border:1px solid rgba(255,208,96,0.4);padding:3px 10px;border-radius:10px;font-weight:700;}
+.badge-new{font-size:0.72rem;background:linear-gradient(135deg,#9090b0,#c0c0d8);color:#0f0f18;padding:3px 10px;border-radius:10px;font-weight:700;}
+.badge-co{font-size:0.72rem;background:rgba(255,208,96,0.15);color:#ffd060;border:1px solid rgba(255,208,96,0.4);padding:3px 10px;border-radius:10px;font-weight:700;}
 .result-balls{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
 .r-ball{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;font-family:'Cinzel',Georgia,serif;}
 .r-ball.low{background:linear-gradient(145deg,#2a2a3a,#484860);border:1.5px solid #9090b0;color:#e0e0f0;}
@@ -69,16 +63,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
 .stat-box{background:linear-gradient(135deg,#202028,#252535);border-radius:10px;padding:14px 8px;text-align:center;border:1px solid #383850;}
 .stat-val{font-family:'Cinzel',Georgia,serif;font-size:1.3rem;font-weight:700;color:#c8c8d8;margin-bottom:6px;}
-.stat-lbl{font-size:0.75rem;color:#707088;letter-spacing:1px;}
+.stat-lbl{font-size:0.75rem;color:#707088;}
 .balance-row{display:flex;gap:10px;margin-bottom:16px;}
 .balance-box{flex:1;background:linear-gradient(135deg,#202028,#252535);border-radius:10px;padding:12px;text-align:center;border:1px solid #383850;}
-.balance-title{font-size:0.75rem;color:#707088;letter-spacing:1px;margin-bottom:6px;}
+.balance-title{font-size:0.75rem;color:#707088;margin-bottom:6px;}
 .balance-bar-wrap{height:8px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden;margin-bottom:6px;}
 .balance-bar-fill{height:100%;border-radius:4px;transition:width 0.8s ease;}
 .balance-nums{font-family:'Cinzel',Georgia,serif;font-size:0.85rem;font-weight:700;color:#c0c0d0;}
 .hot-cold-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .hc-box{background:linear-gradient(135deg,#202028,#252535);border-radius:10px;padding:14px 12px;border:1px solid #383850;}
-.hc-title{font-size:0.82rem;margin-bottom:10px;letter-spacing:1px;display:flex;align-items:center;gap:6px;}
+.hc-title{font-size:0.82rem;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .hc-nums{display:flex;flex-wrap:wrap;gap:5px;}
 .hc-num{width:36px;height:36px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;font-family:'Cinzel',Georgia,serif;}
 .hc-num .cnt{font-size:0.6rem;font-weight:400;margin-top:1px;}
@@ -87,24 +81,23 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .settings-box{position:relative;z-index:1;margin:0 16px;background:#181820;border:1px solid #383850;border-radius:14px;padding:20px;}
 .slider-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
 .slider-row:last-child{margin-bottom:0;}
-.slider-label{font-size:0.85rem;color:#909090;min-width:90px;letter-spacing:1px;}
+.slider-label{font-size:0.85rem;color:#909090;min-width:90px;}
 .slider-wrap{flex:1;}
 input[type=range]{width:100%;height:3px;-webkit-appearance:none;background:#303040;border-radius:2px;outline:none;cursor:pointer;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#a0a0c0,#d0d0e8);border:2px solid #0f0f18;box-shadow:0 2px 8px rgba(0,0,0,0.5);cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#a0a0c0,#d0d0e8);border:2px solid #0f0f18;cursor:pointer;}
 .slider-val{font-family:'Cinzel',Georgia,serif;font-size:1rem;font-weight:700;color:#c8c8d8;min-width:40px;text-align:right;}
-.settings-divider{font-size:0.78rem;letter-spacing:3px;color:#707088;text-align:center;margin:16px 0;display:flex;align-items:center;gap:10px;}
-.settings-divider::before,.settings-divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,#404058,transparent);}
+.settings-divider{font-size:0.78rem;color:#707088;text-align:center;margin:16px 0;display:flex;align-items:center;gap:10px;}
+.settings-divider::before,.settings-divider::after{content:'';flex:1;height:1px;background:#404058;}
 .gen-btn-wrap{position:relative;z-index:1;padding:0 16px;}
-.gen-btn{width:100%;padding:18px;border-radius:14px;border:1px solid #a0a0c0;background:linear-gradient(135deg,#252535,#353548,#454560);color:#e0e0f0;font-weight:700;font-size:1.05rem;cursor:pointer;letter-spacing:3px;transition:all 0.3s;box-shadow:0 4px 16px rgba(0,0,0,0.5);}
-.gen-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.6);}
+.gen-btn{width:100%;padding:18px;border-radius:14px;border:1px solid #a0a0c0;background:linear-gradient(135deg,#252535,#353548,#454560);color:#e0e0f0;font-weight:700;font-size:1.05rem;cursor:pointer;letter-spacing:3px;touch-action:manipulation;}
 .legend{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;padding:0 16px;font-size:0.82rem;color:#707088;}
 .legend-item{display:flex;align-items:center;gap:6px;}
 .leg-dot{width:10px;height:10px;border-radius:50%;}
 .output-section{position:relative;z-index:1;padding:0 16px;}
-.output-card{background:#181820;border:1px solid #383850;border-radius:14px;padding:18px;margin-bottom:10px;box-shadow:0 3px 12px rgba(0,0,0,0.4);animation:fadeUp 0.4s ease both;}
+.output-card{background:#181820;border:1px solid #383850;border-radius:14px;padding:18px;margin-bottom:10px;animation:fadeUp 0.4s ease both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .out-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.out-set{font-size:0.85rem;color:#909090;letter-spacing:2px;display:flex;align-items:center;gap:6px;}
+.out-set{font-size:0.85rem;color:#909090;display:flex;align-items:center;gap:6px;}
 .out-judge{font-size:0.8rem;padding:4px 12px;border-radius:10px;font-weight:700;}
 .out-judge.ok{background:rgba(94,205,164,0.15);color:#5ecda4;border:1px solid rgba(94,205,164,0.35);}
 .out-judge.warn{background:rgba(255,208,96,0.12);color:#ffd060;border:1px solid rgba(255,208,96,0.3);}
@@ -116,12 +109,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .out-info{display:flex;gap:8px;flex-wrap:wrap;}
 .out-chip{background:#222230;border-radius:8px;padding:6px 12px;font-size:0.8rem;color:#909090;border:1px solid #383850;}
 .out-chip span{color:#c8c8d8;font-weight:700;}
-.badge{font-size:0.7rem;padding:3px 8px;border-radius:6px;font-weight:700;letter-spacing:1px;}
+.badge{font-size:0.7rem;padding:3px 8px;border-radius:6px;font-weight:700;}
 .pull-badge{background:rgba(192,144,96,0.2);color:#c09060;border:1px solid rgba(192,144,96,0.35);}
 footer{position:relative;z-index:1;padding:32px 16px 40px;font-size:0.82rem;color:#707088;line-height:2.2;border-top:1px solid #303048;margin-top:32px;}
 .footer-links{display:flex;justify-content:center;gap:20px;margin-bottom:14px;flex-wrap:wrap;}
 .footer-links a{color:#707088;text-decoration:none;font-size:0.78rem;}
-.footer-links a:hover{color:#c0c0d0;}
 .footer-copy{text-align:center;font-size:0.72rem;}
 </style>
 </head>
@@ -142,26 +134,15 @@ footer{position:relative;z-index:1;padding:32px 16px 40px;font-size:0.82rem;colo
   <div class="hero-divider"><span>◆</span></div>
 </div>
 <div class="ad-wrap"><div class="ad-placeholder">広告</div></div>
-<div class="status-bar" id="statusBar">
-  <div class="status-dot"></div>
-  <span id="statusText">データ読み込み中...</span>
-</div>
+<div class="status-bar"><div class="status-dot"></div><span id="statusText">データ読み込み中...</span></div>
 <div class="co-bar" id="coBar" style="display:none;">
-  <span id="coBarText">キャリーオーバー発生中</span>
+  <span>キャリーオーバー発生中</span>
   <span class="co-bar-amt" id="coBarAmt"></span>
 </div>
-<div class="sec-label toggle-label" onclick="toggleSection('recentWrap','recentArrow')">
-  直　近　の　当　選　番　号
-  <span class="toggle-arrow" id="recentArrow" style="transform:rotate(180deg)">▲</span>
-</div>
-<div class="collapsible closed" id="recentWrap">
-  <div class="results-list" id="resultsList"></div>
-</div>
-<div class="sec-label toggle-label" onclick="toggleSection('statsWrap','statsArrow')">
-  直　近　２０回　傾　向　分　析
-  <span class="toggle-arrow" id="statsArrow" style="transform:rotate(180deg)">▲</span>
-</div>
-<div class="collapsible closed" id="statsWrap">
+<div class="sec-label toggle-label" id="recentToggle">直　近　の　当　選　番　号<span class="toggle-arrow" id="recentArrow">▲</span></div>
+<div class="collapsible" id="recentWrap"><div class="results-list" id="resultsList"></div></div>
+<div class="sec-label toggle-label" id="statsToggle">直　近　２０回　傾　向　分　析<span class="toggle-arrow" id="statsArrow">▲</span></div>
+<div class="collapsible" id="statsWrap">
   <div class="stats-wrap">
     <div class="stats-grid">
       <div class="stat-box"><div class="stat-val" id="avgSum">—</div><div class="stat-lbl">平均合計値</div></div>
@@ -169,16 +150,8 @@ footer{position:relative;z-index:1;padding:32px 16px 40px;font-size:0.82rem;colo
       <div class="stat-box"><div class="stat-val" id="avgLow">—</div><div class="stat-lbl">平均低数字数</div></div>
     </div>
     <div class="balance-row">
-      <div class="balance-box">
-        <div class="balance-title">低（1〜21）</div>
-        <div class="balance-bar-wrap"><div class="balance-bar-fill" id="lowBar" style="background:#8080c0;width:50%;"></div></div>
-        <div class="balance-nums" id="lowPct" style="color:#8080c0;">—</div>
-      </div>
-      <div class="balance-box">
-        <div class="balance-title">高（22〜43）</div>
-        <div class="balance-bar-wrap"><div class="balance-bar-fill" id="highBar" style="background:#6060a0;width:50%;"></div></div>
-        <div class="balance-nums" id="highPct" style="color:#6060a0;">—</div>
-      </div>
+      <div class="balance-box"><div class="balance-title">低（1〜21）</div><div class="balance-bar-wrap"><div class="balance-bar-fill" id="lowBar" style="background:#8080c0;width:50%;"></div></div><div class="balance-nums" id="lowPct" style="color:#8080c0;">—</div></div>
+      <div class="balance-box"><div class="balance-title">高（22〜43）</div><div class="balance-bar-wrap"><div class="balance-bar-fill" id="highBar" style="background:#6060a0;width:50%;"></div></div><div class="balance-nums" id="highPct" style="color:#6060a0;">—</div></div>
     </div>
     <div class="hot-cold-grid">
       <div class="hc-box"><div class="hc-title" style="color:#e08888;">🔥 ホット数字</div><div class="hc-nums" id="hotNums">...</div></div>
@@ -189,42 +162,16 @@ footer{position:relative;z-index:1;padding:32px 16px 40px;font-size:0.82rem;colo
 <div class="ad-wrap"><div class="ad-placeholder">広告</div></div>
 <div class="sec-label">予　測　設　定</div>
 <div class="settings-box">
-  <div class="slider-row">
-    <div class="slider-label">生成セット数</div>
-    <div class="slider-wrap"><input type="range" id="setCount" min="1" max="10" value="5" oninput="updateSlider('setCount','setCountVal',v=>v+'セット')"></div>
-    <div class="slider-val" id="setCountVal">5</div>
-  </div>
-  <div class="slider-row">
-    <div class="slider-label">合計値の目標</div>
-    <div class="slider-wrap"><input type="range" id="targetSum" min="120" max="150" value="135" oninput="updateSlider('targetSum','targetSumVal',v=>v)"></div>
-    <div class="slider-val" id="targetSumVal">135</div>
-  </div>
-  <div class="slider-row">
-    <div class="slider-label">ホット優先度</div>
-    <div class="slider-wrap"><input type="range" id="hotPriority" min="0" max="2" value="1" oninput="updateSlider('hotPriority','hotPriorityVal',v=>['低','中','高'][v])"></div>
-    <div class="slider-val" id="hotPriorityVal">中</div>
-  </div>
+  <div class="slider-row"><div class="slider-label">生成セット数</div><div class="slider-wrap"><input type="range" id="setCount" min="1" max="10" value="5" oninput="updateSlider('setCount','setCountVal',v=>v+'セット')"></div><div class="slider-val" id="setCountVal">5</div></div>
+  <div class="slider-row"><div class="slider-label">合計値の目標</div><div class="slider-wrap"><input type="range" id="targetSum" min="120" max="150" value="135" oninput="updateSlider('targetSum','targetSumVal',v=>v)"></div><div class="slider-val" id="targetSumVal">135</div></div>
+  <div class="slider-row"><div class="slider-label">ホット優先度</div><div class="slider-wrap"><input type="range" id="hotPriority" min="0" max="2" value="1" oninput="updateSlider('hotPriority','hotPriorityVal',v=>['低','中','高'][v])"></div><div class="slider-val" id="hotPriorityVal">中</div></div>
   <div class="settings-divider">詳細設定</div>
-  <div class="slider-row">
-    <div class="slider-label">前回引張り数</div>
-    <div class="slider-wrap"><input type="range" id="pullCount" min="0" max="2" value="1" oninput="updateSlider('pullCount','pullCountVal',v=>v=='0'?'なし':v+'個')"></div>
-    <div class="slider-val" id="pullCountVal">1個</div>
-  </div>
-  <div class="slider-row">
-    <div class="slider-label">低高バランス</div>
-    <div class="slider-wrap"><input type="range" id="lowHighMode" min="0" max="2" value="1" oninput="updateSlider('lowHighMode','lowHighModeVal',v=>['低寄り(4/2)','均等(3/3)','高寄り(2/4)'][v])"></div>
-    <div class="slider-val" id="lowHighModeVal" style="font-size:0.7rem;min-width:70px;">均等(3/3)</div>
-  </div>
-  <div class="slider-row">
-    <div class="slider-label">奇偶バランス</div>
-    <div class="slider-wrap"><input type="range" id="oddEvenMode" min="0" max="4" value="2" oninput="updateOddEven(this.value)"></div>
-    <div class="slider-val" id="oddEvenModeVal" style="font-size:0.7rem;min-width:70px;">奇3偶3</div>
-  </div>
+  <div class="slider-row"><div class="slider-label">前回引張り数</div><div class="slider-wrap"><input type="range" id="pullCount" min="0" max="2" value="1" oninput="updateSlider('pullCount','pullCountVal',v=>v=='0'?'なし':v+'個')"></div><div class="slider-val" id="pullCountVal">1個</div></div>
+  <div class="slider-row"><div class="slider-label">低高バランス</div><div class="slider-wrap"><input type="range" id="lowHighMode" min="0" max="2" value="1" oninput="updateSlider('lowHighMode','lowHighModeVal',v=>['低寄り(4/2)','均等(3/3)','高寄り(2/4)'][v])"></div><div class="slider-val" id="lowHighModeVal" style="font-size:0.7rem;min-width:70px;">均等(3/3)</div></div>
+  <div class="slider-row"><div class="slider-label">奇偶バランス</div><div class="slider-wrap"><input type="range" id="oddEvenMode" min="0" max="4" value="2" oninput="updateOddEven(this.value)"></div><div class="slider-val" id="oddEvenModeVal" style="font-size:0.7rem;min-width:70px;">奇3偶3</div></div>
 </div>
 <div class="sec-label" style="margin-top:20px;"></div>
-<div class="gen-btn-wrap">
-  <button class="gen-btn" onclick="generateNumbers()">◆ 番 号 を 生 成 す る ◆</button>
-</div>
+<div class="gen-btn-wrap"><button class="gen-btn" id="genBtn">◆ 番 号 を 生 成 す る ◆</button></div>
 <div class="sec-label" style="margin-top:16px;"></div>
 <div class="legend">
   <div class="legend-item"><div class="leg-dot" style="background:#8080c0;"></div>低数字(1〜21)</div>
@@ -236,11 +183,7 @@ footer{position:relative;z-index:1;padding:32px 16px 40px;font-size:0.82rem;colo
 <div class="ad-wrap" id="adAfterResult" style="display:none;"><div class="ad-placeholder">広告</div></div>
 <footer>
   <div class="footer-links">
-    <a href="index.html">TOP</a>
-    <a href="loto7-gold.html">LOTO 7</a>
-    <a href="loto6.html">LOTO 6</a>
-    <a href="lucky-items.html">開運グッズ</a>
-    <a href="privacy-policy.html">プライバシーポリシー</a>
+    <a href="index.html">TOP</a><a href="loto7-gold.html">LOTO 7</a><a href="loto6.html">LOTO 6</a><a href="lucky-items.html">開運グッズ</a><a href="privacy-policy.html">プライバシーポリシー</a>
   </div>
   <div class="footer-copy">※ 当選を保証するものではありません。楽しみの範囲でご利用ください。<br>© 2026 LOTO LAB</div>
 </footer>
@@ -273,13 +216,22 @@ let RECENT_DATA=[...FALLBACK_DATA];
 let hotNums=[],coldNums=[];
 
 function updateOddEven(v){document.getElementById(‘oddEvenModeVal’).textContent=ODD_EVEN_LABELS[v];}
-function toggleSection(wrapId,arrowId){const wrap=document.getElementById(wrapId);const arrow=document.getElementById(arrowId);const isClosed=wrap.classList.toggle(‘closed’);arrow.style.transform=isClosed?‘rotate(180deg)’:‘rotate(0deg)’;}
 function updateSlider(id,valId,fmt){document.getElementById(valId).textContent=fmt(document.getElementById(id).value);}
 
+function toggleSection(wrapId,arrowId){
+const wrap=document.getElementById(wrapId);
+const arrow=document.getElementById(arrowId);
+if(!wrap||!arrow)return;
+const isOpen=wrap.classList.contains(‘open’);
+if(isOpen){wrap.classList.remove(‘open’);arrow.style.transform=‘rotate(0deg)’;}
+else{wrap.classList.add(‘open’);arrow.style.transform=‘rotate(180deg)’;}
+}
+
 function renderCarryover(){
-const latest=RECENT_DATA[0];const bar=document.getElementById(‘coBar’);
-if(latest.co&&latest.coAmt){document.getElementById(‘coBarText’).textContent=‘キャリーオーバー発生中’;document.getElementById(‘coBarAmt’).textContent=latest.coAmt;bar.style.cssText=‘display:flex !important;’;}
-else{bar.style.cssText=‘display:none !important;’;}
+const bar=document.getElementById(‘coBar’);
+const latest=RECENT_DATA[0];
+if(latest.co&&latest.coAmt){document.getElementById(‘coBarAmt’).textContent=latest.coAmt;bar.style.cssText=‘display:flex!important;’;}
+else{bar.style.cssText=‘display:none!important;’;}
 }
 
 function renderRecentResults(){
@@ -317,9 +269,15 @@ const hotPrio=parseInt(document.getElementById(‘hotPriority’).value);
 const pullCount=parseInt(document.getElementById(‘pullCount’).value);
 const lowHighMode=parseInt(document.getElementById(‘lowHighMode’).value);
 const oddEvenMode=parseInt(document.getElementById(‘oddEvenMode’).value);
-document.getElementById(‘outputLabel’).style.display=‘flex’;document.getElementById(‘adAfterResult’).style.display=‘block’;
+document.getElementById(‘outputLabel’).style.display=‘flex’;
+document.getElementById(‘adAfterResult’).style.display=‘block’;
 const out=document.getElementById(‘outputSection’);out.innerHTML=’’;
-for(let s=0;s<sets;s++){let result=null;for(let attempt=0;attempt<1000;attempt++){result=tryGen(target,hotPrio,pullCount,lowHighMode,oddEvenMode);if(result)break;}if(!result)continue;renderOutput(result,s+1,out);}
+for(let s=0;s<sets;s++){
+let result=null;
+for(let attempt=0;attempt<1000;attempt++){result=tryGen(target,hotPrio,pullCount,lowHighMode,oddEvenMode);if(result)break;}
+if(!result)continue;
+renderOutput(result,s+1,out);
+}
 }
 
 function tryGen(target,hotPrio,pullCount,lowHighMode,oddEvenMode){
@@ -328,7 +286,8 @@ const lowTarget=[4,3,2][lowHighMode];const hiTarget=6-lowTarget;const[tOdd,tEven
 const pullNums=[];
 if(pullCount>0){const cands=[…prevNums].sort(()=>Math.random()-0.5);for(let i=0;i<cands.length&&pullNums.length<pullCount;i++)pullNums.push(cands[i]);}
 let fixed=[…pullNums];
-const needLow=Math.max(0,lowTarget-fixed.filter(n=>n<=21).length);const needHigh=Math.max(0,hiTarget-fixed.filter(n=>n>=22).length);
+const needLow=Math.max(0,lowTarget-fixed.filter(n=>n<=21).length);
+const needHigh=Math.max(0,hiTarget-fixed.filter(n=>n>=22).length);
 if(needLow+needHigh+fixed.length!==6)return null;
 let lowPool=[],highPool=[];
 for(let i=1;i<=21;i++){if(fixed.includes(i))continue;if(hotPrio===2&&hotSet.has(i)){lowPool.push(i);lowPool.push(i);}else if(hotPrio===0&&hotSet.has(i))continue;else lowPool.push(i);}
@@ -339,7 +298,8 @@ if(lowFill.length<needLow||highFill.length<needHigh)return null;
 let picks=[…new Set([…fixed,…lowFill,…highFill])];if(picks.length!==6)return null;
 let odd=picks.filter(n=>n%2!==0).length;let even=picks.filter(n=>n%2===0).length;
 if(odd!==tOdd||even!==tEven){
-const excess=odd>tOdd?‘odd’:‘even’;const swapOut=picks.filter(n=>!pullNums.includes(n)&&(excess===‘odd’?n%2!==0:n%2===0));if(!swapOut.length)return null;
+const excess=odd>tOdd?‘odd’:‘even’;
+const swapOut=picks.filter(n=>!pullNums.includes(n)&&(excess===‘odd’?n%2!==0:n%2===0));if(!swapOut.length)return null;
 const swapPool=[…lowPool,…highPool].filter(n=>!picks.includes(n)&&(excess===‘odd’?n%2===0:n%2!==0));if(!swapPool.length)return null;
 swapPool.sort(()=>Math.random()-0.5);const tgt=swapOut[Math.floor(Math.random()*swapOut.length)];picks[picks.indexOf(tgt)]=swapPool[0];
 picks=[…new Set(picks)];if(picks.length!==6)return null;
@@ -347,12 +307,14 @@ odd=picks.filter(n=>n%2!==0).length;even=picks.filter(n=>n%2===0).length;if(odd!
 }
 picks.sort((a,b)=>a-b);const sum=picks.reduce((a,b)=>a+b,0);
 if(sum<120||sum>150||Math.abs(sum-target)>15)return null;
-return picks.map(n=>({n,type:pullNums.includes(n)?‘pull’:n<=21?‘low’:‘high’,hot:hotSet.has(n)}));
+return picks.map(n=>({n,type:pullNums.includes(n)?‘pull’:n<=21?‘low’:‘high’}));
 }
 
 function renderOutput(nums,setNo,container){
-const vals=nums.map(x=>x.n);const sum=vals.reduce((a,b)=>a+b,0);const odd=vals.filter(n=>n%2!==0).length;const even=6-odd;
-const low=vals.filter(n=>n<=21).length;const high=vals.filter(n=>n>=22).length;const allOk=sum>=120&&sum<=150;
+const vals=nums.map(x=>x.n);const sum=vals.reduce((a,b)=>a+b,0);
+const odd=vals.filter(n=>n%2!==0).length;const even=6-odd;
+const low=vals.filter(n=>n<=21).length;const high=vals.filter(n=>n>=22).length;
+const allOk=sum>=120&&sum<=150;
 const card=document.createElement(‘div’);card.className=‘output-card’;card.style.animationDelay=`${(setNo-1)*0.07}s`;
 const hasPull=nums.some(x=>x.type===‘pull’);
 const balls=nums.map(x=>`<div class="out-ball ${x.type}">${String(x.n).padStart(2,'0')}</div>`).join(’’);
@@ -360,14 +322,21 @@ card.innerHTML=`<div class="out-head"><div class="out-set">SET ${setNo} ${hasPul
 container.appendChild(card);
 }
 
-window.onload=()=>{
+window.onload=function(){
 updateSlider(‘setCount’,‘setCountVal’,v=>v+‘セット’);
 updateSlider(‘targetSum’,‘targetSumVal’,v=>v);
 updateSlider(‘hotPriority’,‘hotPriorityVal’,v=>[‘低’,‘中’,‘高’][v]);
 updateSlider(‘pullCount’,‘pullCountVal’,v=>v==‘0’?‘なし’:v+‘個’);
 updateSlider(‘lowHighMode’,‘lowHighModeVal’,v=>[‘低寄り(4/2)’,‘均等(3/3)’,‘高寄り(2/4)’][v]);
 updateOddEven(document.getElementById(‘oddEvenMode’).value);
-analyzeStats();renderRecentResults();renderCarryover();
+analyzeStats();
+renderRecentResults();
+renderCarryover();
+
+// イベント登録（onclick属性を使わず確実に）
+document.getElementById(‘recentToggle’).addEventListener(‘click’,function(){toggleSection(‘recentWrap’,‘recentArrow’);});
+document.getElementById(‘statsToggle’).addEventListener(‘click’,function(){toggleSection(‘statsWrap’,‘statsArrow’);});
+document.getElementById(‘genBtn’).addEventListener(‘click’,function(){generateNumbers();});
 };
 </script>
 
