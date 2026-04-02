@@ -191,6 +191,7 @@ footer{position:relative;z-index:1;padding:32px 16px 40px;font-size:0.82rem;colo
 const ODD_EVEN_LABELS=['奇2偶4','奇3偶3','奇4偶2','奇5偶1','奇1偶5'];
 const ODD_EVEN_VALS=[[2,4],[3,3],[4,2],[5,1],[1,5]];
 const FALLBACK_DATA=[
+  {round:2089,date:'2026/03/30',nums:[9,16,18,32,37,43],bonus:[13],co:true,coAmt:'2億3,680万円'},
   {round:2088,date:'2026/03/26',nums:[8,16,18,27,37,39],bonus:[29],co:true,coAmt:'2億3,680万円'},
   {round:2087,date:'2026/03/23',nums:[7,10,15,18,26,39],bonus:[13],co:false,coAmt:null},
   {round:2086,date:'2026/03/19',nums:[4,11,19,28,35,40],bonus:[6],co:true,coAmt:'3億7,700万円'},
@@ -210,7 +211,6 @@ const FALLBACK_DATA=[
   {round:2072,date:'2026/01/29',nums:[2,10,18,23,30,39],bonus:[14],co:true,coAmt:'2億900万円'},
   {round:2071,date:'2026/01/26',nums:[4,11,19,28,36,43],bonus:[6],co:false,coAmt:null},
   {round:2070,date:'2026/01/22',nums:[7,15,21,25,32,40],bonus:[9],co:false,coAmt:null},
-  {round:2069,date:'2026/01/19',nums:[3,13,17,22,34,41],bonus:[20],co:true,coAmt:'1億7,300万円'},
 ];
 let RECENT_DATA=[...FALLBACK_DATA];
 let hotNums=[],coldNums=[];
