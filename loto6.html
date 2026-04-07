@@ -290,8 +290,9 @@ document.getElementById(‘highPct’).textContent=(100-lp)+’%’;
 var freq={};
 for(var i=1;i<=43;i++)freq[i]=0;
 allNums.forEach(function(n){freq[n]++;});
-var sortedKeys=Object.keys(freq).sort(function(a,b){return freq[b]-freq[a];});
-var sorted=sortedKeys.map(function(k){return [k,freq[k]];});
+var sortedKeys=[];for(var sk in freq){sortedKeys.push(sk);}
+sortedKeys.sort(function(a,b){return freq[b]-freq[a];});
+var sorted=[];for(var si2=0;si2<sortedKeys.length;si2++){sorted.push([sortedKeys[si2],freq[sortedKeys[si2]]]);}
 hotNums=sorted.slice(0,10).filter(function(x){return x[1]>0;}).map(function(x){return {n:+x[0],cnt:x[1]};});
 coldNums=sorted.slice(-10).reverse().map(function(x){return {n:+x[0],cnt:x[1]};});
 var hotHTML=’’;
@@ -365,7 +366,7 @@ if(lowFill.length<needLow||highFill.length<needHigh)return null;
 var picks=fixed.concat(lowFill).concat(highFill);
 var unique={};
 picks.forEach(function(n){unique[n]=true;});
-if(Object.keys(unique).length!==6)return null;
+var ucount=0;for(var uk in unique){ucount++;}if(ucount!==6)return null;
 var odd=picks.filter(function(n){return n%2!==0;}).length;
 var even=picks.filter(function(n){return n%2===0;}).length;
 if(odd!==tOdd||even!==tEven){
@@ -379,7 +380,7 @@ var tgt=swapOut[Math.floor(Math.random()*swapOut.length)];
 picks[picks.indexOf(tgt)]=swapPool[0];
 var unique2={};
 picks.forEach(function(n){unique2[n]=true;});
-if(Object.keys(unique2).length!==6)return null;
+var ucount2=0;for(var uk2 in unique2){ucount2++;}if(ucount2!==6)return null;
 odd=picks.filter(function(n){return n%2!==0;}).length;
 even=picks.filter(function(n){return n%2===0;}).length;
 if(odd!==tOdd||even!==tEven)return null;
