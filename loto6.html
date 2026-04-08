@@ -191,7 +191,7 @@ footer{position:relative;z-index:1;padding:32px 16px 40px;font-size:0.82rem;colo
   <div class="footer-copy">※ 当選を保証するものではありません。楽しみの範囲でご利用ください。<br>© 2026 LOTO LAB</div>
 </footer>
 <script>
-function pad2(n){var s=String(n);return s.length<2?"0"+s:s;}
+function pad2(n){var s=String(n);return s.length<2?'0'+s:s;}
 var ODD_EVEN_LABELS=['奇2偶4','奇3偶3','奇4偶2','奇5偶1','奇1偶5'];
 var ODD_EVEN_VALS=[[2,4],[3,3],[4,2],[5,1],[1,5]];
 var FALLBACK_DATA=[
@@ -220,90 +220,56 @@ var RECENT_DATA=FALLBACK_DATA.slice();
 var hotNums=[],coldNums=[];
 
 function updateOddEven(v){document.getElementById(‘oddEvenModeVal’).textContent=ODD_EVEN_LABELS[v];}
-
 function toggleSection(wrapId,arrowId){
 var wrap=document.getElementById(wrapId);
 var arrow=document.getElementById(arrowId);
 if(!wrap||!arrow)return;
-if(wrap.classList.contains(‘open’)){
-wrap.classList.remove(‘open’);
-arrow.style.transform=‘rotate(0deg)’;
-}else{
-wrap.classList.add(‘open’);
-arrow.style.transform=‘rotate(180deg)’;
+if(wrap.classList.contains(‘open’)){wrap.classList.remove(‘open’);arrow.style.transform=‘rotate(0deg)’;}
+else{wrap.classList.add(‘open’);arrow.style.transform=‘rotate(180deg)’;}
 }
-}
-
-function updateSlider(id,valId,fmt){
-document.getElementById(valId).textContent=fmt(document.getElementById(id).value);
-}
-
+function updateSlider(id,valId,fmt){document.getElementById(valId).textContent=fmt(document.getElementById(id).value);}
 function renderCarryover(){
-var latest=RECENT_DATA[0];
-var bar=document.getElementById(‘coBar’);
-if(latest.co&&latest.coAmt){
-document.getElementById(‘coBarAmt’).textContent=latest.coAmt;
-bar.style.display=‘flex’;
-}else{
-bar.style.display=‘none’;
+var latest=RECENT_DATA[0];var bar=document.getElementById(‘coBar’);
+if(latest.co&&latest.coAmt){document.getElementById(‘coBarAmt’).textContent=latest.coAmt;bar.style.display=‘flex’;}
+else{bar.style.display=‘none’;}
 }
-}
-
 function renderRecentResults(){
-var list=document.getElementById(‘resultsList’);
-list.innerHTML=’’;
+var list=document.getElementById(‘resultsList’);list.innerHTML=’’;
 RECENT_DATA.slice(0,5).forEach(function(d,i){
-var card=document.createElement(‘div’);
-card.className=‘result-card’;
-var badges=’’;
-if(i===0)badges+=’<span class="badge-new">最新</span>’;
-if(d.co)badges+=’<span class="badge-co">CO</span>’;
+var card=document.createElement(‘div’);card.className=‘result-card’;
+var badge=i===0?’<span class="badge-new">最新</span>’:’’;
+var cobadge=d.co?’<span class="badge-co">CO</span>’:’’;
 var balls=’’;
-d.nums.forEach(function(n){
-var cls=n<=21?‘low’:‘high’;
-balls+=’<div class="r-ball '+cls+'">’+pad2(n)+’</div>’;
-});
+d.nums.forEach(function(n){var cls=n<=21?‘low’:‘high’;balls+=’<div class="r-ball '+cls+'">’+pad2(n)+’</div>’;});
 balls+=’<div class="r-ball bonus-label">B</div>’;
-d.bonus.forEach(function(n){
-balls+=’<div class="r-ball bonus">’+pad2(n)+’</div>’;
-});
-card.innerHTML=’<div class="result-head"><div><div class="result-round">第’+d.round+‘回</div><div class="result-date">’+d.date+’</div></div><div class="result-badges">’+badges+’</div></div><div class="result-balls">’+balls+’</div>’;
+d.bonus.forEach(function(n){balls+=’<div class="r-ball bonus">’+pad2(n)+’</div>’;});
+card.innerHTML=’<div class="result-head"><div><div class="result-round">第’+d.round+‘回</div><div class="result-date">’+d.date+’</div></div><div class="result-badges">’+badge+cobadge+’</div></div><div class="result-balls">’+balls+’</div>’;
 list.appendChild(card);
 });
 document.getElementById(‘statusText’).textContent=‘データ読み込み完了 - 第’+RECENT_DATA[0].round+‘回まで’;
 }
-
 function analyzeStats(){
-var data=RECENT_DATA.slice(0,20);
-var allNums=[];
+var data=RECENT_DATA.slice(0,20);var allNums=[];
 data.forEach(function(d){d.nums.forEach(function(n){allNums.push(n);});});
 var sums=data.map(function(d){return d.nums.reduce(function(a,b){return a+b;},0);});
 document.getElementById(‘avgSum’).textContent=Math.round(sums.reduce(function(a,b){return a+b;},0)/sums.length);
-var oddCount=allNums.filter(function(n){return n%2!==0;}).length;
-document.getElementById(‘oddRate’).textContent=Math.round(oddCount/allNums.length*100)+’%’;
+document.getElementById(‘oddRate’).textContent=Math.round(allNums.filter(function(n){return n%2!==0;}).length/allNums.length*100)+’%’;
 var lowCount=data.map(function(d){return d.nums.filter(function(n){return n<=21;}).length;});
 document.getElementById(‘avgLow’).textContent=(lowCount.reduce(function(a,b){return a+b;},0)/data.length).toFixed(1)+‘個’;
 var lp=Math.round(allNums.filter(function(n){return n<=21;}).length/allNums.length*100);
-document.getElementById(‘lowBar’).style.width=lp+’%’;
-document.getElementById(‘highBar’).style.width=(100-lp)+’%’;
-document.getElementById(‘lowPct’).textContent=lp+’%’;
-document.getElementById(‘highPct’).textContent=(100-lp)+’%’;
-var freq={};
-for(var i=1;i<=43;i++)freq[i]=0;
-allNums.forEach(function(n){freq[n]++;});
+document.getElementById(‘lowBar’).style.width=lp+’%’;document.getElementById(‘highBar’).style.width=(100-lp)+’%’;
+document.getElementById(‘lowPct’).textContent=lp+’%’;document.getElementById(‘highPct’).textContent=(100-lp)+’%’;
+var freq={};for(var i=1;i<=43;i++)freq[i]=0;allNums.forEach(function(n){freq[n]++;});
 var sortedKeys=[];for(var sk in freq){sortedKeys.push(sk);}
 sortedKeys.sort(function(a,b){return freq[b]-freq[a];});
-var sorted=[];for(var si2=0;si2<sortedKeys.length;si2++){sorted.push([sortedKeys[si2],freq[sortedKeys[si2]]]);}
+var sorted=[];for(var si=0;si<sortedKeys.length;si++){sorted.push([sortedKeys[si],freq[sortedKeys[si]]]);}
 hotNums=sorted.slice(0,10).filter(function(x){return x[1]>0;}).map(function(x){return {n:+x[0],cnt:x[1]};});
 coldNums=sorted.slice(-10).reverse().map(function(x){return {n:+x[0],cnt:x[1]};});
-var hotHTML=’’;
-hotNums.forEach(function(x){hotHTML+=’<div class="hc-num hot">’+pad2(x.n)+’<span class="cnt">’+x.cnt+‘回</span></div>’;});
+var hotHTML=’’;hotNums.forEach(function(x){hotHTML+=’<div class="hc-num hot">’+pad2(x.n)+’<span class="cnt">’+x.cnt+‘回</span></div>’;});
 document.getElementById(‘hotNums’).innerHTML=hotHTML;
-var coldHTML=’’;
-coldNums.forEach(function(x){coldHTML+=’<div class="hc-num cold">’+pad2(x.n)+’<span class="cnt">’+x.cnt+‘回</span></div>’;});
+var coldHTML=’’;coldNums.forEach(function(x){coldHTML+=’<div class="hc-num cold">’+pad2(x.n)+’<span class="cnt">’+x.cnt+‘回</span></div>’;});
 document.getElementById(‘coldNums’).innerHTML=coldHTML;
 }
-
 function generateNumbers(){
 var sets=parseInt(document.getElementById(‘setCount’).value);
 var target=parseInt(document.getElementById(‘targetSum’).value);
@@ -313,108 +279,66 @@ var lowHighMode=parseInt(document.getElementById(‘lowHighMode’).value);
 var oddEvenMode=parseInt(document.getElementById(‘oddEvenMode’).value);
 document.getElementById(‘outputLabel’).style.display=‘flex’;
 document.getElementById(‘adAfterResult’).style.display=‘block’;
-var out=document.getElementById(‘outputSection’);
-out.innerHTML=’’;
+var out=document.getElementById(‘outputSection’);out.innerHTML=’’;
 for(var s=0;s<sets;s++){
 var result=null;
-for(var attempt=0;attempt<1000;attempt++){
-result=tryGen(target,hotPrio,pullCount,lowHighMode,oddEvenMode);
-if(result)break;
-}
-if(!result)continue;
-renderOutput(result,s+1,out);
+for(var attempt=0;attempt<1000;attempt++){result=tryGen(target,hotPrio,pullCount,lowHighMode,oddEvenMode);if(result)break;}
+if(!result)continue;renderOutput(result,s+1,out);
 }
 }
-
 function tryGen(target,hotPrio,pullCount,lowHighMode,oddEvenMode){
-var prevNums=RECENT_DATA[0].nums;
-var hotSet={};
+var prevNums=RECENT_DATA[0].nums;var hotSet={};
 hotNums.forEach(function(x){hotSet[x.n]=true;});
-var lowTarget=[4,3,2][lowHighMode];
-var hiTarget=6-lowTarget;
-var tOdd=ODD_EVEN_VALS[oddEvenMode][0];
-var tEven=ODD_EVEN_VALS[oddEvenMode][1];
+var lowTarget=[4,3,2][lowHighMode];var hiTarget=6-lowTarget;
+var tOdd=ODD_EVEN_VALS[oddEvenMode][0];var tEven=ODD_EVEN_VALS[oddEvenMode][1];
 var pullNums=[];
-if(pullCount>0){
-var cands=prevNums.slice().sort(function(){return Math.random()-0.5;});
-for(var i=0;i<cands.length&&pullNums.length<pullCount;i++)pullNums.push(cands[i]);
-}
+if(pullCount>0){var cands=prevNums.slice().sort(function(){return Math.random()-0.5;});for(var i=0;i<cands.length&&pullNums.length<pullCount;i++)pullNums.push(cands[i]);}
 var fixed=pullNums.slice();
 var needLow=Math.max(0,lowTarget-fixed.filter(function(n){return n<=21;}).length);
 var needHigh=Math.max(0,hiTarget-fixed.filter(function(n){return n>=22;}).length);
 if(needLow+needHigh+fixed.length!==6)return null;
 var lowPool=[],highPool=[];
-for(var li=1;li<=21;li++){
-if(fixed.indexOf(li)>=0)continue;
-if(hotPrio===2&&hotSet[li]){lowPool.push(li);lowPool.push(li);}
-else if(hotPrio===0&&hotSet[li])continue;
-else lowPool.push(li);
-}
-for(var hi=22;hi<=43;hi++){
-if(fixed.indexOf(hi)>=0)continue;
-if(hotPrio===2&&hotSet[hi]){highPool.push(hi);highPool.push(hi);}
-else if(hotPrio===0&&hotSet[hi])continue;
-else highPool.push(hi);
-}
-lowPool.sort(function(){return Math.random()-0.5;});
-highPool.sort(function(){return Math.random()-0.5;});
+for(var li=1;li<=21;li++){if(fixed.indexOf(li)>=0)continue;if(hotPrio===2&&hotSet[li]){lowPool.push(li);lowPool.push(li);}else if(hotPrio===0&&hotSet[li])continue;else lowPool.push(li);}
+for(var hi=22;hi<=43;hi++){if(fixed.indexOf(hi)>=0)continue;if(hotPrio===2&&hotSet[hi]){highPool.push(hi);highPool.push(hi);}else if(hotPrio===0&&hotSet[hi])continue;else highPool.push(hi);}
+lowPool.sort(function(){return Math.random()-0.5;});highPool.sort(function(){return Math.random()-0.5;});
 var lowUniq=[],highUniq=[];
 lowPool.forEach(function(n){if(lowUniq.indexOf(n)<0)lowUniq.push(n);});
 highPool.forEach(function(n){if(highUniq.indexOf(n)<0)highUniq.push(n);});
-var lowFill=lowUniq.slice(0,needLow);
-var highFill=highUniq.slice(0,needHigh);
+var lowFill=lowUniq.slice(0,needLow);var highFill=highUniq.slice(0,needHigh);
 if(lowFill.length<needLow||highFill.length<needHigh)return null;
 var picks=fixed.concat(lowFill).concat(highFill);
-var unique={};
-picks.forEach(function(n){unique[n]=true;});
-var ucount=0;for(var uk in unique){ucount++;}if(ucount!==6)return null;
-var odd=picks.filter(function(n){return n%2!==0;}).length;
-var even=picks.filter(function(n){return n%2===0;}).length;
+var ucount=0;var unique={};picks.forEach(function(n){unique[n]=true;});for(var uk in unique){ucount++;}
+if(ucount!==6)return null;
+var odd=picks.filter(function(n){return n%2!==0;}).length;var even=picks.filter(function(n){return n%2===0;}).length;
 if(odd!==tOdd||even!==tEven){
 var excess=odd>tOdd?‘odd’:‘even’;
-var swapOut=picks.filter(function(n){return pullNums.indexOf(n)<0&&(excess===‘odd’?n%2!==0:n%2===0);});
-if(!swapOut.length)return null;
-var swapPool=lowPool.concat(highPool).filter(function(n){return picks.indexOf(n)<0&&(excess===‘odd’?n%2===0:n%2!==0);});
-if(!swapPool.length)return null;
+var swapOut=picks.filter(function(n){return pullNums.indexOf(n)<0&&(excess===‘odd’?n%2!==0:n%2===0);});if(!swapOut.length)return null;
+var swapPool=lowPool.concat(highPool).filter(function(n){return picks.indexOf(n)<0&&(excess===‘odd’?n%2===0:n%2!==0);});if(!swapPool.length)return null;
 swapPool.sort(function(){return Math.random()-0.5;});
-var tgt=swapOut[Math.floor(Math.random()*swapOut.length)];
-picks[picks.indexOf(tgt)]=swapPool[0];
-var unique2={};
-picks.forEach(function(n){unique2[n]=true;});
-var ucount2=0;for(var uk2 in unique2){ucount2++;}if(ucount2!==6)return null;
-odd=picks.filter(function(n){return n%2!==0;}).length;
-even=picks.filter(function(n){return n%2===0;}).length;
+var tgt=swapOut[Math.floor(Math.random()*swapOut.length)];picks[picks.indexOf(tgt)]=swapPool[0];
+var ucount2=0;var unique2={};picks.forEach(function(n){unique2[n]=true;});for(var uk2 in unique2){ucount2++;}
+if(ucount2!==6)return null;
+odd=picks.filter(function(n){return n%2!==0;}).length;even=picks.filter(function(n){return n%2===0;}).length;
 if(odd!==tOdd||even!==tEven)return null;
 }
 picks.sort(function(a,b){return a-b;});
 var sum=picks.reduce(function(a,b){return a+b;},0);
 if(sum<120||sum>150||Math.abs(sum-target)>15)return null;
-return picks.map(function(n){
-return {n:n,type:pullNums.indexOf(n)>=0?‘pull’:n<=21?‘low’:‘high’};
-});
+return picks.map(function(n){return {n:n,type:pullNums.indexOf(n)>=0?‘pull’:n<=21?‘low’:‘high’};});
 }
-
 function renderOutput(nums,setNo,container){
 var vals=nums.map(function(x){return x.n;});
 var sum=vals.reduce(function(a,b){return a+b;},0);
-var odd=vals.filter(function(n){return n%2!==0;}).length;
-var even=6-odd;
-var low=vals.filter(function(n){return n<=21;}).length;
-var high=vals.filter(function(n){return n>=22;}).length;
+var odd=vals.filter(function(n){return n%2!==0;}).length;var even=6-odd;
+var low=vals.filter(function(n){return n<=21;}).length;var high=vals.filter(function(n){return n>=22;}).length;
 var allOk=sum>=120&&sum<=150;
-var card=document.createElement(‘div’);
-card.className=‘output-card’;
-card.style.animationDelay=((setNo-1)*0.07)+‘s’;
-var balls=’’;
-nums.forEach(function(x){
-balls+=’<div class="out-ball '+x.type+'">’+pad2(x.n)+’</div>’;
-});
+var card=document.createElement(‘div’);card.className=‘output-card’;card.style.animationDelay=((setNo-1)*0.07)+‘s’;
+var balls=’’;nums.forEach(function(x){balls+=’<div class="out-ball '+x.type+'">’+pad2(x.n)+’</div>’;});
 var hasPull=nums.some(function(x){return x.type===‘pull’;});
 var badges=hasPull?’<span class="badge pull-badge">引張</span>’:’’;
 card.innerHTML=’<div class="out-head"><div class="out-set">SET ‘+setNo+’ ‘+badges+’</div><div class="out-judge '+(allOk?'ok':'warn')+'">’+(allOk?‘◎ GOOD’:‘△ CHECK’)+’</div></div><div class="out-balls">’+balls+’</div><div class="out-info"><div class="out-chip">合計 <span>’+sum+’</span></div><div class="out-chip">奇偶 <span>’+odd+’:’+even+’</span></div><div class="out-chip">低/高 <span>’+low+’/’+high+’</span></div></div>’;
 container.appendChild(card);
 }
-
 window.onload=function(){
 updateSlider(‘setCount’,‘setCountVal’,function(v){return v+‘セット’;});
 updateSlider(‘targetSum’,‘targetSumVal’,function(v){return v;});
@@ -422,9 +346,7 @@ updateSlider(‘hotPriority’,‘hotPriorityVal’,function(v){return [‘低�
 updateSlider(‘pullCount’,‘pullCountVal’,function(v){return v==0?‘なし’:v+‘個’;});
 updateSlider(‘lowHighMode’,‘lowHighModeVal’,function(v){return [‘低寄り(4/2)’,‘均等(3/3)’,‘高寄り(2/4)’][v];});
 updateOddEven(document.getElementById(‘oddEvenMode’).value);
-renderRecentResults();
-analyzeStats();
-renderCarryover();
+renderRecentResults();analyzeStats();renderCarryover();
 document.getElementById(‘recentToggle’).addEventListener(‘click’,function(){toggleSection(‘recentWrap’,‘recentArrow’);});
 document.getElementById(‘statsToggle’).addEventListener(‘click’,function(){toggleSection(‘statsWrap’,‘statsArrow’);});
 document.getElementById(‘genBtn’).addEventListener(‘click’,function(){generateNumbers();});
